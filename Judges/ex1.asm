@@ -1,7 +1,7 @@
 .data
-        daymsg: .asciiz "Entre com o dia (DD):"
-        mounthmsg: .asciiz "Entre com o mes (MM):"
-        yearmsg: .asciiz "Entre com o ano (AAAA):"
+        daymsg: .asciiz "Entre com o dia (DD):\n"
+        mounthmsg: .asciiz "Entre com o mes (MM):\n"
+        yearmsg: .asciiz "Entre com o ano (AAAA):\n"
         barstring: .asciiz "/"
         notvaliddaymsg: .asciiz "Dia invalido. \n"
         notvalidmonthmsg: .asciiz "Mes invalido. \n"
@@ -59,7 +59,7 @@ loop_year:
 
         move $t2, $v0
 	
-        blt $t2, 1899, print_year
+        blt $t2, 1900, print_year
 	bge $t2, 2022, print_year
         add $s3, $s3, $t2
         j print_final_msg
