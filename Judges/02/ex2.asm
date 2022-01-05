@@ -1,15 +1,17 @@
 .data
         insertMessage:          .asciiz "Insira a mensagem:\n"
         totalCharacterMessage:  .asciiz "Numero total de caracteres:\n" 
-        input: .space 80
+        input: .space 90
 .text
 .globl main
 
 main:
         li $v0, 8
         la $a0, input
-        li $a1, 80
+        addi $a1, $zero, 90
         syscall
+
+        move $t7, $v0
 
         jal strlen_start
         addi $a0, $v0, 0
@@ -22,7 +24,7 @@ strlen_start:
         addi $t0, $0, 0
 
 strlen_loop: 
-        lbu $t3, 0($a0)
+        lb $t3, 0($a0)
         beq $t3, $0, strlen_finish
         addi $a0, $a0, 1
         addi $t0, $t0, 1
