@@ -3,7 +3,7 @@
         totalCharacterMessage:  .asciiz "Numero total de caracteres:" 
         cryptoMessage:          .asciiz "\nMensagem Criptografada:"
         breakRow:               .asciiz "\n"
-        input: .space 90
+        input: .space 120
 .text
 .globl main
 
@@ -14,7 +14,7 @@ main:
 
         li $v0, 8
         la $a0, input
-        addi $a1, $zero, 90
+        addi $a1, $zero, 120
         syscall
 
         move $t7, $v0
