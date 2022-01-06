@@ -1,7 +1,7 @@
 .data
-        insertMessage:          .asciiz "Insira a mensagem:"
-        totalCharacterMessage:  .asciiz "\nNumero total de caracteres:" 
-        cryptoMessage:          .asciiz "\n\nMensagem Criptografada:"
+        insertMessage:          .asciiz "Insira a mensagem: "
+        totalCharacterMessage:  .asciiz "Numero total de caracteres: " 
+        cryptoMessage:          .asciiz "\nMensagem Criptografada: "
         breakRow:               .asciiz "\n"
 
         space:    .asciiz " "
@@ -17,8 +17,8 @@
         letter_M: .asciiz "M"
         letter_h: .asciiz "h"
         letter_H: .asciiz "h"
-        letter_i: .asciiz "i"
-        letter_I: .asciiz "I"
+        letter_l: .asciiz "l"
+        letter_L: .asciiz "L"
         letter_s: .asciiz "s"
         letter_S: .asciiz "S"
         letter_p: .asciiz "p"
@@ -62,7 +62,7 @@ strlen_finish:
         la $a0, totalCharacterMessage
         syscall
 
-        addi $t0,$t0, -1
+        # addi $t0,$t0, -1
         
         addi $a0, $v0, 0
         li $v0, 1
@@ -117,8 +117,8 @@ check:
         beq $t3, 55, print_letter_L 
         beq $t3, 56, print_letter_S 
         beq $t3, 57, print_letter_P 
-        # li $v0, 4
-        # la $a0, 0($t4)
+        li $v0, 4
+        la $a0, 0($t4)
         syscall
         j crypto_loop
 
