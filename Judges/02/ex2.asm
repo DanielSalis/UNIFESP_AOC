@@ -1,27 +1,28 @@
 .data
         insertMessage:          .asciiz "Insira a mensagem:"
-        totalCharacterMessage:  .asciiz "Numero total de caracteres:" 
-        cryptoMessage:          .asciiz "\nMensagem Criptografada:"
+        totalCharacterMessage:  .asciiz "\nNumero total de caracteres:" 
+        cryptoMessage:          .asciiz "\n\nMensagem Criptografada:"
         breakRow:               .asciiz "\n"
 
-        letter_a: .byte 097
-        letter_A: .byte 065
-        letter_r: .byte 114
-        letter_R: .byte 082
-        letter_e: .byte 101
-        letter_E: .byte 69
-        letter_o: .byte 111
-        letter_O: .byte 079
-        letter_m: .byte 109
-        letter_M: .byte 077
-        letter_h: .byte 104
-        letter_H: .byte 72
-        letter_i: .byte 105
-        letter_I: .byte 73
-        letter_s: .byte 115
-        letter_S: .byte 83
-        letter_p: .byte 112
-        letter_P: .byte 80
+        space:    .asciiz " "
+        letter_a: .asciiz "a"
+        letter_A: .asciiz "A"
+        letter_r: .asciiz "r"
+        letter_R: .asciiz "R"
+        letter_e: .asciiz "e"
+        letter_E: .asciiz "E"
+        letter_o: .asciiz "o"
+        letter_O: .asciiz "O"
+        letter_m: .asciiz "m"
+        letter_M: .asciiz "M"
+        letter_h: .asciiz "h"
+        letter_H: .asciiz "h"
+        letter_i: .asciiz "i"
+        letter_I: .asciiz "I"
+        letter_s: .asciiz "s"
+        letter_S: .asciiz "S"
+        letter_p: .asciiz "p"
+        letter_P: .asciiz "P"
 
         input: .space 120
 .text
@@ -106,18 +107,18 @@ check:
         beq $t3, 112, print_number_9 #case p
         beq $t3, 080, print_number_9 #case p
         
-        beq $t3, 0, spac #case space
-        beq $t3, 1, print_number_0 #case space
-        beq $t3, 2, print_number_1 #case a
-        beq $t3, 3, print_number_1 #case a
-        beq $t3, 4, print_number_2 #case r
-        beq $t3, 5, print_number_2 #case r
-        beq $t3, 6, print_number_3 #case e
-        beq $t3, 7, print_number_3 #case e
-        beq $t3, 8, print_number_4 #case o
-        beq $t3, 9, print_number_4 #case o
-        li $v0, 4
-        la $a0, 0($t4)
+        beq $t3, 48, print_space 
+        beq $t3, 49, print_letter_A
+        beq $t3, 50, print_letter_R 
+        beq $t3, 51, print_letter_E 
+        beq $t3, 52, print_letter_O 
+        beq $t3, 53, print_letter_M 
+        beq $t3, 54, print_letter_H 
+        beq $t3, 55, print_letter_L 
+        beq $t3, 56, print_letter_S 
+        beq $t3, 57, print_letter_P 
+        # li $v0, 4
+        # la $a0, 0($t4)
         syscall
         j crypto_loop
 
@@ -197,6 +198,13 @@ print_number_8:
 print_number_9:
         li $v0, 1
         la $a0, 9
+        syscall
+
+        j crypto_loop
+
+print_space:
+        li $v0, 4
+        la $a0, space
         syscall
 
         j crypto_loop
