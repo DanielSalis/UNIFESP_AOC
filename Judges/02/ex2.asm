@@ -84,6 +84,7 @@ crypto_init:
 
         addi $t3, $zero, 0
         addi $t0, $zero, 0
+        addi $t5, $zero, -1
         j crypto_loop
 
 check:
@@ -117,20 +118,25 @@ check:
         beq $t3, 55, print_letter_L 
         beq $t3, 56, print_letter_S 
         beq $t3, 57, print_letter_P 
-        li $v0, 4
-        la $a0, 0($t4)
-        syscall
+        j print_current_char
         j crypto_loop
 
 crypto_loop:
         lb $t3, 0($t4)
         beq $t3, $0, crypto_loop_finish,
+        addi $t5, $t5, 1
         addi $t4, $t4, 1
         j check
 
 crypto_loop_finish:
         j exit_program
 
+
+print_current_char:
+        li $v0, 4
+        la $a0, ($t4)
+        syscall
+        j crypto_loop
 
 print_number_0:
         li $v0, 1
