@@ -89,9 +89,6 @@ get_str:
 get_length:
         lb $t7, 0($t6)
         beqz $t7, exit_loop
-        la      $a0, ($t7)
-        li      $v0, 4
-        syscall
         addi $t6, $t6, 1
         addi $t1, $t1, 1
         j get_length
@@ -102,6 +99,10 @@ exit_loop:
         syscall
 
         addi    $t1, $t1, -1
+        
+        la      $a0, ($t1)
+        li      $v0, 1
+        syscall
 
         li      $v0, 4
         la      $a0, cryptoMessage
