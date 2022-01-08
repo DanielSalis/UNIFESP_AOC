@@ -1,63 +1,76 @@
-         .text
-         .globl main
-    main:
-         la $a0,str1 #Load and print string asking for string
-         li $v0,4
-         syscall
+    .data
+prompt:     .asciiz     "Enter string ('.' to end) > "
+dot:        .asciiz     "."
+eqmsg:      .asciiz     "strings are equal\n"
+nemsg:      .asciiz     "strings are not equal\n"
 
-         li $v0,8 #take in input
-         la $a0, buffer #load byte space into address
-         li $a1, 20 # allot the byte space for string
-         move $t0,$a0 #save string to t0
-         syscall
+str1:       .space      80
+str2:       .space      80
 
-         la $a0,str2 #load and print "you wrote" string
-         li $v0,4
-         syscall
+    .text
 
-         la $a0, buffer #reload byte space to primary address
-         move $a0,$t0 # primary address = t0 address (load pointer)
-         li $v0,4 # print string
-         syscall
+    .globl  main
+main:
+    # get first string
+    la      $s2,str1
+    move    $t2,$s2
+    jal     getstr
 
-         li $v0,10 #end program
-         syscall
+    # get second string
+    la      $s3,str2
+    move    $t2,$s3
+    jal     getstr
 
+# string compare loop (just like strcmp)
+cmploop:
+    lb      $t2,($s2)                   # get next char from str1
+    lb      $t3,($s3)                   # get next char from str2
+    bne     $t2,$t3,cmpne               # are they different? if yes, fly
+    beq     $t2,$zero,cmpeq             # at EOS? yes, fly (strings equal)
 
-               .data
-             buffer: .space 20
-             str1:  .asciiz "Enter string(max 20 chars): "
-             str2:  .asciiz "You wrote:\n"
-             ###############################
-             #Output:
-             #Enter string(max 20 chars): qwerty 123
-             #You wrote:
-             #qwerty 123
-             #Enter string(max 20 chars):   new world oreddeYou wrote:
-             #  new world oredde //lol special character
-             ###############################
+    addi    $s2,$s2,1                   # point to next char
+    addi    $s3,$s3,1                   # point to next char
+    j       cmploop
 
+# strings are _not_ equal -- send message
+cmpne:
+    la      $a0,nemsg
+    li      $v0,4
+    syscall
+    j       main
 
-loop:
-    beq $t0, $t2, saiDoLoop
-    sw $a0, meuArray($t0)
-    addi $t0, $t0, 4
-    addi $a0, $a0, 1
-    addi $t1, $t1, 1
-    j loop
+# strings _are_ equal -- send message
+cmpeq:
+    la      $a0,eqmsg
+    li      $v0,4
+    syscall
+    j       main
 
-saiDoLoop:
-    move $t0, $zero
-
-imprime:
-    beq $t0, $t2, saiDaImpressao
-    li  $v0, 1
-    lw $a0, meuArray($t0)
+# getstr -- prompt and read string from user
+#
+# arguments:
+#   t2 -- address of string buffer
+getstr:
+    # prompt the user
+    la      $a0,prompt
+    li      $v0,4
     syscall
 
-    addi $t0, $t0, 1
-    j imprime
+    # read in the string
+    move    $a0,$t2
+    li      $a1,79
+    li      $v0,8
+    syscall
 
-saiDaImpressao: 
-    li $v0, 10
+    # should we stop?
+    la      $a0,dot                     # get address of dot string
+    lb      $a0,($a0)                   # get the dot value
+    lb      $t2,($t2)                   # get first char of user string
+    beq     $t2,$a0,exit                # equal? yes, exit program
+
+    jr      $ra                         # return
+
+# exit program
+exit:
+    li      $v0,10
     syscall
