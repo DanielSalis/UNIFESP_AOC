@@ -50,9 +50,6 @@ cmploop:
         beq     $t2, 082, print_number_2    #case r
         beq     $t2, 114, print_number_2    #case r
 
-        la      $a0, ($s2)
-        li      $v0,4
-        syscall
 
         beq     $t2,$zero,exit_program      # at EOS? yes, fly (strings equal)
         addi    $s2,$s2,1
@@ -105,10 +102,6 @@ exit_loop:
         syscall
 
         addi    $t1, $t1, -1
-        
-        la      $a0, ($t1)
-        li      $v0, 1
-        syscall
 
         li      $v0, 4
         la      $a0, cryptoMessage
