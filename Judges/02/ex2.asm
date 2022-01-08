@@ -62,7 +62,7 @@ strlen_finish:
         la $a0, totalCharacterMessage
         syscall
 
-        # addi $t0,$t0, -1
+        addi $t0,$t0, -1
         
         addi $a0, $v0, 0
         li $v0, 1
