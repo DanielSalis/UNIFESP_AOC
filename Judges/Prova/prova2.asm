@@ -3,12 +3,14 @@ array:                .space  201
 arraySize:            .word   200
 enter:                .asciiz "\n"
 invalidMessage:       .asciiz "Valor invalido!"
+invalidChars:       .asciiz "Caracteres invalidos!"
 
 .text
 .globl main
 main:
-li $t1, 0 #count for 'w'
-li $t2, 0 #count for 'r'
+li $t1, 0
+li $t2, 0
+li $t9, 0
 
 li  $v0, 8
 la  $a0, array
@@ -20,15 +22,16 @@ li  $v0, 5
 syscall
 move $t6, $v0
 
+blt		$t6, 1, printInvalidMEssage
+bgt		$t6, 10, printInvalidMEssage
+
 loop:
 lb $t3, 0($t0)
 beq $t3, 0, exit
-blt		$t3, 1, printInvalidMEssage
-bgt		$t3, 10, printInvalidMEssage
 
-#verifica se é r ou w
 beq $t3, 'W', w_count
 beq $t3, 'R', r_count
+beq	$t3, 'A', printInvalidChars
 
 addi $t0, $t0, 1
 j loop
@@ -50,12 +53,12 @@ mfhi	$t4
 
 add		$t7, $t7, $t4
 add		$t8, $t7, $t1
-#print number of 't'
+
 li $v0, 1
 move $a0, $t8
 syscall
 
-li $v0, 10 #end program
+li $v0, 10
 syscall
 
 printInvalidMEssage:
@@ -63,5 +66,14 @@ li $v0, 4
 la $a0, invalidMessage
 syscall
 
-li $v0, 10 #end program
+li $v0, 10
+syscall
+
+
+printInvalidChars:
+li $v0, 4
+la $a0, invalidChars
+syscall
+
+li $v0, 10
 syscall
