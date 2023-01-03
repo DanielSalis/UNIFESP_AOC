@@ -1,7 +1,8 @@
 .data
 array:                .space  201
 arraySize:            .word   200
-enter:   .asciiz "\n"
+enter:                .asciiz "\n"
+invalidMessage:       .asciiz "Valor invalido!"
 
 .text
 .globl main
@@ -22,6 +23,8 @@ move $t6, $v0
 loop:
 lb $t3, 0($t0)
 beq $t3, 0, exit
+blt		$t3, 1, printInvalidMEssage
+bgt		$t3, 10, printInvalidMEssage
 
 #verifica se é r ou w
 beq $t3, 'W', w_count
@@ -50,6 +53,14 @@ add		$t8, $t7, $t1
 #print number of 't'
 li $v0, 1
 move $a0, $t8
+syscall
+
+li $v0, 10 #end program
+syscall
+
+printInvalidMEssage:
+li $v0, 4
+la $a0, invalidMessage
 syscall
 
 li $v0, 10 #end program
