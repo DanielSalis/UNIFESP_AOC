@@ -118,11 +118,11 @@ colorizeEnemyLoop:
 	addi $t0, $t0, 8000		#pula 8000 pixels
 	move $a0, $t0
 	add $t7, $t7, 1
-	beq $t7, 3, fimCarro
+	beq $t7, 3, endEnemies
 	j colorizeEnemyLoop
 
 
-fimCarro:
+endEnemies:
 	POP($t2)
 	POP($t0)
 	POP($a0)
